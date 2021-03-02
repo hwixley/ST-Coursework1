@@ -15,26 +15,27 @@ private Parser parser;
 	}
 	
 	@Test
-	public void test_empty_parse() {
-		assertEquals(parser.parse(""), 0);
+	public void test_empty_name() {
+		parser.add("", Parser.STRING);
+		assertEquals(parser.parse("--"), 0); //BUG: says error?
 	}
 	
 	@Test
-	public void test_noShortcut() {
+	public void test_optionWithNoShortcut() {
 		parser.add("filename", Parser.STRING);
 		parser.parse("--filename 1.txt");
 		assertEquals(parser.getString("filename"), "1.txt");
 	}
 	
 	@Test
-	public void test_shortcut() {
+	public void test_optionWithShortcut() {
 		parser.add("output", "o", Parser.STRING);
 		parser.parse("--output out.txt");
 		assertEquals(parser.getString("output"), "out.txt");
 	}
 	
 	@Test
-	public void test_inputArgs_multiple() {
+	public void test_multipleInputArgs() {
 		parser.add("filename", Parser.STRING);
 		parser.add("output", "o", Parser.STRING);
 		parser.parse("--filename 2.txt --output output.txt");
@@ -46,25 +47,8 @@ private Parser parser;
 	}
 	
 	@Test
-	public void test_name_overwrite1() {
-		parser.add("filename", "f", Parser.STRING);
-		parser.add("filename", Parser.STRING);
-		
-		assertNotEquals(parser.parse("-f valGang"), 0);
-	}
-	
-	@Test
-	public void test_name_overwrite2() {
-		parser.add("filename", "f", Parser.STRING);
-		parser.add("filename", Parser.STRING);
-
-		assertNotEquals(parser.parse("--f val"), 0);
-	}
-
-	@Test
 	public void test_name_sameAsShortcut() {
 		parser.add("opt", "opt", Parser.BOOLEAN);
-		
 		parser.parse("-opt yes");
 		assertEquals(parser.getBoolean("opt"), true);
 	}
@@ -86,7 +70,7 @@ private Parser parser;
 		assertEquals(parser.getString("opt"), "'words");
 		
 		parser.parse("--opt 'words");
-		assertEquals(parser.getString("opt"), "'words"); //BUG
+		assertEquals(parser.getString("opt"), "'words"); //BUG: ' should be included in the String value
 	}
 	
 	@Test
@@ -108,7 +92,7 @@ private Parser parser;
 		
 		parser.add("test2", Parser.BOOLEAN);
 		parser.parse("--test2");
-		assertEquals(parser.getBoolean("test2"), false); //BUG
+		assertEquals(parser.getBoolean("test2"), false); //BUG: default value should be false
 		
 		parser.add("test3", Parser.CHAR);
 		parser.parse("--test3");
@@ -191,16 +175,25 @@ private Parser parser;
 		
 	}
 	
-	@Test
-	public void test_parse_returnValues() {
-		
-	}
-	
-	@Test
-	public void test_parse_incorrectSyntax() {
+	@Test // Overwriting an option
+	public void test_parse_returnValues_extinctShortcut() {
 		parser.add("filename", "f", Parser.STRING);
 		parser.add("filename", Parser.STRING);
-		
-		assertNotEquals(parser.parse("--f val"), 0);
+		assertNotEquals(parser.parse("-f valGang"), 0); //BUG: f should not exist as a shortcut (should be invalid input)
+	}
+	
+	@Test // Overwriting an option
+	public void test_parse_returnValues_extinctName() {
+		parser.add("filename", "f", Parser.STRING);
+		parser.add("filename", Parser.STRING);
+		assertNotEquals(parser.parse("--f val"), 0); //BUG: f should not exist as an option name (should be invalid input)
+	}
+
+	
+	@Test // Value that starts with " ="
+	public void test_value_containsEquals() {
+		parser.add("opt", Parser.STRING);
+		parser.parse("--opt =nice");
+		assertEquals(parser.getString("opt"), "=nice"); //BUG: "<name> =<value>" works when only "<name>=<value>" should
 	}
 }
