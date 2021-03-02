@@ -15,6 +15,11 @@ private Parser parser;
 	}
 	
 	@Test
+	public void test_empty_parse() {
+		assertEquals(parser.parse(""), 0);
+	}
+	
+	@Test
 	public void test_noShortcut() {
 		parser.add("filename", Parser.STRING);
 		parser.parse("--filename 1.txt");
@@ -41,43 +46,77 @@ private Parser parser;
 	}
 	
 	@Test
-	public void test_name_overwrite() {
+	public void test_name_overwrite1() {
 		parser.add("filename", "f", Parser.STRING);
 		parser.add("filename", Parser.STRING);
 		
 		assertNotEquals(parser.parse("-f valGang"), 0);
-		
+	}
+	
+	@Test
+	public void test_name_overwrite2() {
+		parser.add("filename", "f", Parser.STRING);
+		parser.add("filename", Parser.STRING);
+
 		assertNotEquals(parser.parse("--f val"), 0);
 	}
 
 	@Test
 	public void test_name_sameAsShortcut() {
-		parser.add("opt", Parser.BOOLEAN);
-		parser.add("option", "opt", Parser.CHAR);
-	}
-	
-	@Test
-	public void test_name_dashValue() {
+		parser.add("opt", "opt", Parser.BOOLEAN);
 		
-	}
-	
-	@Test
-	public void test_name_injectionAttack() {
-		
+		parser.parse("-opt yes");
+		assertEquals(parser.getBoolean("opt"), true);
 	}
 	
 	@Test
 	public void test_name_quotations() {
+		parser.add("opt", "o", Parser.STRING);
 		
+		parser.parse("--opt \"words\"");
+		assertEquals(parser.getString("opt"), "words");
+		
+		parser.parse("--opt 'words'");
+		assertEquals(parser.getString("opt"), "words");
+		
+		parser.parse("--opt '\"words'");
+		assertEquals(parser.getString("opt"), "\"words");
+		
+		parser.parse("--opt \"'words\"");
+		assertEquals(parser.getString("opt"), "'words");
+		
+		parser.parse("--opt 'words");
+		assertEquals(parser.getString("opt"), "'words"); //BUG
 	}
 	
 	@Test
 	public void test_name_caseSensitivity() {
+		parser.add("opt", Parser.STRING);
+		parser.add("oPt", Parser.STRING);
 		
+		parser.parse("--opt val");
+		parser.parse("--oPt nice");
+		assertEquals(parser.getString("opt"), "val");
+		assertEquals(parser.getString("oPt"), "nice");
 	}
 	
 	@Test
 	public void test_valueType_defaults() {
+		parser.add("test1", Parser.STRING);
+		parser.parse("--test1");
+		assertEquals(parser.getString("test1"), "");
+		
+		parser.add("test2", Parser.BOOLEAN);
+		parser.parse("--test2");
+		assertEquals(parser.getBoolean("test2"), false); //BUG
+		
+		parser.add("test3", Parser.CHAR);
+		parser.parse("--test3");
+		assertEquals(parser.getChar("test3"), '\0');
+		
+		parser.add("test4", Parser.INTEGER);
+		parser.parse("--test4");
+		assertEquals(parser.getInteger("test4"), 0);
 		
 	}
 	
@@ -88,16 +127,6 @@ private Parser parser;
 
 	@Test
 	public void test_shortcut_sameAsName() {
-		
-	}
-	
-	@Test
-	public void test_shortcut_dashValue() {
-		
-	}
-	
-	@Test
-	public void test_shortcut_injectionAttack() {
 		
 	}
 	
