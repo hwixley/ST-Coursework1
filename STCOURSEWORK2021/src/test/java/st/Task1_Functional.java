@@ -42,12 +42,18 @@ private Parser parser;
 	
 	@Test
 	public void test_name_overwrite() {
+		parser.add("filename", "f", Parser.STRING);
+		parser.add("filename", Parser.STRING);
 		
+		assertNotEquals(parser.parse("-f valGang"), 0);
+		
+		assertNotEquals(parser.parse("--f val"), 0);
 	}
 
 	@Test
 	public void test_name_sameAsShortcut() {
-		
+		parser.add("opt", Parser.BOOLEAN);
+		parser.add("option", "opt", Parser.CHAR);
 	}
 	
 	@Test
@@ -163,6 +169,9 @@ private Parser parser;
 	
 	@Test
 	public void test_parse_incorrectSyntax() {
+		parser.add("filename", "f", Parser.STRING);
+		parser.add("filename", Parser.STRING);
 		
+		assertNotEquals(parser.parse("--f val"), 0);
 	}
 }
