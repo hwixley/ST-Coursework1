@@ -63,69 +63,12 @@ public class Parser {
 		case CHAR:
 			result = (int)getChar(option);
 			break;
-		case CHARLIST: // TDD
-			 result = -1;
 		default:
 			result = 0;
 		}
 		return result;
 	}
 	
-	//TDD - CHARLIST
-	public List<Character> getCharList(String chlist){
-		boolean isadded =false;
-		String value = getString(chlist);
-		List<Character> chListtt = new ArrayList<Character>();
-		char[] charr =value.toCharArray();
-		if(value.isEmpty())
-			return chListtt;
-		else {
-			for(int i=0;i<charr.length;i++) { 
-				
-				if(i>0 && i<charr.length-1 && charr[i]=='-') {
-					if(charr[i-1]>charr[i+1]) {
-						for (char d = charr[i-1];d>=charr[i+1];d--) {
-							if(!isadded) {
-								isadded = true;
-								chListtt.add(--d);
-							}
-							else {
-								chListtt.add(d);
-							}
-						}
-						if(isadded) {
-						isadded=false;
-						i++;
-					  }
-					}//KUCUK IF charr[i-1]>charr[i+1]
-					else {
-						for (char c = charr[i-1]; c <= charr[i+1]; c++) {
-						if(!isadded) {
-							isadded = true;
-							chListtt.add(++c);
-						}
-						else {
-							chListtt.add(c);
-						}
-							
-				    }
-					isadded =false;
-					i++;
-					}
-					
-					
-				}
-				else if( Character.isLetterOrDigit(charr[i]) || charr[i]=='.') {
-					chListtt.add(Character.toLowerCase(charr[i]));
-				}
-
-			}
-		}
-			System.out.println(chListtt);
-			return chListtt;
-		
-	}
-	//END OF CHARLIST
 	
 	public boolean getBoolean(String option) {
 		String value = getString(option);
