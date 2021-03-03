@@ -17,7 +17,13 @@ private Parser parser;
 	@Test
 	public void test_empty_name() {
 		parser.add("", Parser.STRING);
-		assertEquals(parser.parse("--"), 0); //BUG: says error?
+		assertEquals(parser.parse("--"), 0); //BUG: cannot parse empty name (spec does not say min length)
+	}
+	
+	@Test
+	public void test_empty_shortcut() {
+		parser.add("test","", Parser.STRING);
+		assertEquals(parser.parse("-"), 0); //BUG: cannot parse empty shortcut (spec does not say min length)
 	}
 	
 	@Test
@@ -106,7 +112,10 @@ private Parser parser;
 	
 	@Test
 	public void test_shortcut_overwrite() {
-		
+		parser.add("test1", "t", Parser.STRING);
+		parser.parse("-t testValue");
+		parser.add("test2", "t", Parser.STRING);
+		assertEquals(parser.getString("t"), ""); //BUG: shortcut was overwritten and so value should be reset
 	}
 
 	@Test
