@@ -63,6 +63,15 @@ private Parser parser;
 	
 	@Test
 	public void bug() {
-		
+		parser.add("f", Parser.STRING);
+		parser.add("opt","f", Parser.STRING);
+
+		assertEquals(parser.parse("--opt 1 -f 2 --opt 3"), 0);
+		assertEquals(parser.parse("--opt 1 -f 2 --opt 3"), 0);
+		assertEquals(parser.getString("f"), "");
+		assertEquals(parser.getString("opt"), "3");
+		//parser.add("file", Parser.STRING);
+		//assertNotEquals(parser.parse("-f=value"), 0);
+		//assertEquals(parser.getString("__"), "value");
 	}
 }
