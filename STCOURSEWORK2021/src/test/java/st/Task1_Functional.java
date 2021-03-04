@@ -325,9 +325,55 @@ private Parser parser;
 		assertEquals("3",parser.getString("optimise"), "");
 	}
 	
+	//EDGE CASES
+	
+	@Test
+	public void test_decimals() {
+		parser.add("opt", Parser.INTEGER);
+		assertNotEquals(parser.parse("--opt 2.1"), 0);
+	}
+	
+	@Test
+	public void noTags() {
+		parser.add("option", Parser.STRING);
+		assertNotEquals(parser.parse("option nice"), 0);
+	}
+	
+	@Test
+	public void wrongTags1() {
+		parser.add("option", Parser.STRING);
+		assertNotEquals(parser.parse("-option nice"), 0);
+	}
+	
+	@Test
+	public void wrongTags2() {
+		parser.add("option", "opt",Parser.STRING);
+		assertNotEquals(parser.parse("--opt nice"), 0);
+	}
+	
+	@Test
+	public void underscoreName() {
+		parser.add("_", Parser.STRING);
+		assertEquals(parser.parse("--_ value"), 0);
+	}
+	
+	@Test
+	public void multipleSameLineCalls() {
+		parser.add("option", Parser.STRING);
+		parser.parse("--option 1 --option 2");
+		assertEquals(parser.getString("option"), "2");
+	}
+	
+	@Test
+	public void test_shortcutEquals() {
+		parser.add("option","O", Parser.STRING);
+		parser.parse("-O=1");
+		assertEquals(parser.getString("O"), "1");
+	}
+	
 	
 	// OLD tests
-
+	
 	@Test
 	public void test_empty_name() {
 		parser.add("", Parser.STRING);
