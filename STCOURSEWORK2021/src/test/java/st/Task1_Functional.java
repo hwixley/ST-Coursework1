@@ -44,7 +44,7 @@ private Parser parser;
 	}
 	
 	@Test
-	public void bug10() { // 3 point
+	public void bug10() { // 3 points
 		parser.add("file","f", Parser.CHAR);
 		parser.add("f", Parser.BOOLEAN);
 		//parser.add("fix","f", Parser.STRING);
@@ -53,11 +53,16 @@ private Parser parser;
 	}
 	
 	@Test
-	public void bug() {
+	public void bug13() { // 2 points
 		parser.add("file","f", Parser.CHAR);
 		parser.add("f", Parser.BOOLEAN);
 		//parser.add("fix","f", Parser.STRING);
-		assertEquals(parser.parse("--f=-1"), 0);
-		assertEquals(parser.getString("f"), "-1");
+		assertEquals(parser.parse("-f=value"), 0);
+		assertEquals(parser.getString("f"), "");
+	}
+	
+	@Test
+	public void bug() {
+		
 	}
 }
