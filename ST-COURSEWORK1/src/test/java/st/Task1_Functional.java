@@ -102,11 +102,10 @@ private Parser parser;
 	
 	@Test
 	 public void shortcut() {
-	  parser.add("output", "oUt", Parser.STRING);
-	  parser.add("oUt", "out", Parser.STRING);
-	  parser.parse("-oUt=1.txt -out=12 --output=1nine"); // i assigned a value using shortcut
-	  assertEquals(parser.getString("output"),"1nine"); // I got the value with shortcut
-	  assertEquals(parser.getString("oUt"), "12");
+	  parser.add("optimise", "O", Parser.BOOLEAN);
+	  parser.parse("-O -O"); // i assigned a value using shortcut
+	  assertEquals(parser.getBoolean("optimise"), true); // I got the value with shortcut
+	  //assertEquals(parser.getString("oUt"), "12");
 	 }
 	
 	/*@Test
