@@ -108,12 +108,13 @@ private Parser parser;
 	public void shortcut() {
 		//parser.add("filename", Parser.STRING);
 		parser.add("output", "o", Parser.STRING);
-		parser.add("o", Parser.BOOLEAN);
-		assertEquals(parser.parse("--o=1.txt -o=2.txt"), 0);
+		parser.add("o_9", Parser.BOOLEAN);
+		assertEquals(parser.parse("--o =1.txt -o=2.txt"), 0);
+		//assertEquals(parser.parse("--o"), 0);
 		//parser.add("output", "O", Parser.STRING);
 		
 		//assertEquals(parser.parse("-o=1.txt --filename=2.txt"), 0);
-		assertEquals(parser.getString("o"), "1.txt");
+		assertEquals(parser.getString("o "), "1.txt");
 		assertEquals(parser.getString("output"), "2.txt");
 
 		//assertEquals(parser.parse("-O=O"), 0); // i assigned a value using shortcut
