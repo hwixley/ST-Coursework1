@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
+
 public class Task1_Functional {
 	
 private Parser parser;
@@ -62,16 +64,10 @@ private Parser parser;
 	}
 	
 	@Test
-	public void bug() {
-		parser.add("f", Parser.STRING);
-		parser.add("opt","f", Parser.STRING);
-
-		assertEquals(parser.parse("--opt 1 -f 2 --opt 3"), 0);
-		assertEquals(parser.parse("--opt 1 -f 2 --opt 3"), 0);
-		assertEquals(parser.getString("f"), "");
-		assertEquals(parser.getString("opt"), "3");
-		//parser.add("file", Parser.STRING);
-		//assertNotEquals(parser.parse("-f=value"), 0);
-		//assertEquals(parser.getString("__"), "value");
-	}
+	 public void shortcut() {
+	  parser.add("output", "out", Parser.STRING);
+	  parser.add("out", Parser.STRING);
+	  parser.parse("-out=test.txt"); // i assigned a value using shortcut
+	  assertEquals(parser.getString("out"),""); // I got the value with shortcut
+	 }
 }

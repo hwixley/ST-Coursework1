@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-/*public class Parser {
+public class Parser {
 	public static final int INTEGER = 1;
 	public static final int BOOLEAN = 2;
 	public static final int STRING = 3;
@@ -209,5 +209,5 @@ import java.util.List;
 		return optionMap.toString();
 	}
 
-}*/
+}
 

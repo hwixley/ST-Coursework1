@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="lib" path="/home/hwixley/Documents/Year3/ST/cw1/STCOURSEWORK2021/ST_COURSEWORK.jar"/>
 	<classpathentry kind="src" output="target/classes" path="src/main/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
@@ -24,6 +25,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/hwixley/Documents/Year3/ST/cw1/STCOURSEWORK2021/ST_COURSEWORK.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -3,7 +3,7 @@ package st;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-/*public class OptionMap {
+public class OptionMap {
 	public static final int INTEGER = 1;
 	public static final int BOOLEAN = 2;
 	public static final int STRING = 3;
@@ -210,4 +210,4 @@ import java.util.HashSet;
 			return OptionMap.this;
 		}        
 	}
-}*/
+}
