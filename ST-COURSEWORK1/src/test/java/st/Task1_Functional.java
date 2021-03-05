@@ -57,7 +57,9 @@ private Parser parser;
 	
 	@Test
 	public void bug7() {
-		
+		parser.add("optimise", "oo", Parser.INTEGER);
+		assertEquals(parser.parse("--optimise=-1"), 0);
+		assertEquals(parser.getInteger("optimise"), -1);
 	}
 	
 	@Test
@@ -104,9 +106,23 @@ private Parser parser;
 	
 	@Test
 	public void shortcut() {
-		parser.add("optimise", "O", Parser.BOOLEAN);
-		parser.parse("-O=0"); // i assigned a value using shortcut
-		//assertEquals(parser.getBoolean("optimise"), false); // I got the value with shortcut
+		//int[] types = {Parser.CHAR, Parser.INTEGER, Parser.STRING, Parser.BOOLEAN};
+		parser.add("optimise", "oo", Parser.INTEGER);
+		assertEquals(parser.parse("--optimise=-0"), 0);
+		assertEquals(parser.getInteger("optimise"), 0);
+		
+		/*for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				parser.add("O", "", types[i]);
+				System.out.println(j);
+				parser.add("o_o", types[j]);
+			}
+		}*/
+
+		//assertEquals(parser.parse("-O=O"), 0); // i assigned a value using shortcut
+		//parser.add("O","optimise", Parser.BOOLEAN);
+		//assertEquals(parser.getString(""), ""); // I got the value with shortcut
+		
 		//assertEquals(parser.getString("oUt"), "12");
 	}
 	
