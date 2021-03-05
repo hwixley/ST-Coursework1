@@ -14,7 +14,7 @@ private Parser parser;
 		parser = new Parser();
 	}
 	
-	@Test
+	/*@Test
 	public void bug1() { // 2 points
 		parser.add("", Parser.STRING);
 		assertEquals(parser.parse("--"), 0); //BUG: cannot parse empty name (spec does not say min length)
@@ -102,22 +102,19 @@ private Parser parser;
 		//parser.add("fix","f", Parser.STRING);
 		assertEquals(parser.parse("-f=value"), 0);
 		assertEquals(parser.getString("f"), "");
-	}
+	}*/
 	
 	@Test
 	public void shortcut() {
-		//int[] types = {Parser.CHAR, Parser.INTEGER, Parser.STRING, Parser.BOOLEAN};
-		parser.add("optimise", "oo", Parser.INTEGER);
-		assertEquals(parser.parse("--optimise=-0"), 0);
-		assertEquals(parser.getInteger("optimise"), 0);
+		//parser.add("filename", Parser.STRING);
+		parser.add("output", "o", Parser.STRING);
+		parser.add("o", Parser.BOOLEAN);
+		assertEquals(parser.parse("--o=1.txt -o=2.txt"), 0);
+		//parser.add("output", "O", Parser.STRING);
 		
-		/*for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				parser.add("O", "", types[i]);
-				System.out.println(j);
-				parser.add("o_o", types[j]);
-			}
-		}*/
+		//assertEquals(parser.parse("-o=1.txt --filename=2.txt"), 0);
+		assertEquals(parser.getString("o"), "1.txt");
+		assertEquals(parser.getString("output"), "2.txt");
 
 		//assertEquals(parser.parse("-O=O"), 0); // i assigned a value using shortcut
 		//parser.add("O","optimise", Parser.BOOLEAN);
