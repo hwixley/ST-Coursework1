@@ -37,7 +37,9 @@ private Parser parser;
 	
 	@Test
 	public void bug4() {
-		
+		parser.add("optimise", "O", Parser.BOOLEAN);
+		parser.parse("-O=0");
+		assertEquals(parser.getBoolean("optimise"), false);
 	}
 	
 	@Test
@@ -101,12 +103,12 @@ private Parser parser;
 	}
 	
 	@Test
-	 public void shortcut() {
-	  parser.add("optimise", "O", Parser.BOOLEAN);
-	  parser.parse("-O -O"); // i assigned a value using shortcut
-	  assertEquals(parser.getBoolean("optimise"), true); // I got the value with shortcut
-	  //assertEquals(parser.getString("oUt"), "12");
-	 }
+	public void shortcut() {
+		parser.add("optimise", "O", Parser.BOOLEAN);
+		parser.parse("-O=0"); // i assigned a value using shortcut
+		//assertEquals(parser.getBoolean("optimise"), false); // I got the value with shortcut
+		//assertEquals(parser.getString("oUt"), "12");
+	}
 	
 	/*@Test
 	public void bug() {
