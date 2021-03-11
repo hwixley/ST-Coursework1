@@ -14,7 +14,7 @@ private Parser parser;
 		parser = new Parser();
 	}
 	
-	/*@Test
+	@Test
 	public void bug1() { // 2 points
 		parser.add("", Parser.STRING);
 		assertEquals(parser.parse("--"), 0); //BUG: cannot parse empty name (spec does not say min length)
@@ -108,7 +108,7 @@ private Parser parser;
 		//parser.add("fix","f", Parser.STRING);
 		assertEquals(parser.parse("-f=value"), 0);
 		assertEquals(parser.getString("f"), "");
-	}*/
+	}
 	
 	/*@Test
 	public void shortcut() {
@@ -137,7 +137,7 @@ private Parser parser;
 		parser.parse("--F value --f");
 		assertEquals(parser.getString("F"), "value");
 		assertEquals(parser.getString("f"), "");
-	}*/
+	}
 	@Test
 	public void test_11() {
 		parser.add("output","o", Parser.STRING);
@@ -447,5 +447,5 @@ private Parser parser;
 		assertEquals("1",parser.getInteger("opt"), 12);
 		assertEquals("2",parser.getString("input"), "1.txt");
 		assertEquals("3",parser.getString("optimise"), "");
-	}
+	}*/
 }
