@@ -1,0 +1,2 @@
+java -jar evosuite-1.1.0.jar -class st.Parser -generateTests -projectCP ST_COURSEWORK.jar
+
