@@ -115,11 +115,15 @@ private Parser parser;
 	
 	@Test
 	public void bug() {
-		parser.add("file", Parser.STRING);
-
-		assertEquals(0, parser.parse(""));
-		assertEquals("9rfg", parser.getString(""));
+		parser.add("output", "out", Parser.STRING);
+		assertEquals(0, parser.parse("--output=test.txt")); // parser will return 0, because you are passing input in correct way. 
+		assertEquals(0, parser.parse("-out=wow")); 
+		assertEquals("wow", parser.getString("out"));
+		
+		assertEquals(0, parser.parse("-out=nice -out=''"));
+		assertEquals("", parser.getString("out"));
 	}
+
 	
 	/*@Test
 	public void shortcut() {
