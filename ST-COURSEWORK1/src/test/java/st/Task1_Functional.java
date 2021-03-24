@@ -14,15 +14,16 @@ private Parser parser;
 		parser = new Parser();
 	}
 	
-	@Test
+	/*@Test
 	public void bug1() { // 2 points
 		parser.add("", Parser.STRING);
-		assertEquals(parser.parse("--"), 0); //BUG: cannot parse empty name (spec does not say min length)
+		assertEquals(0, parser.parse("--")); //BUG: cannot parse empty name (spec does not say min length)
 	}
 	
 	@Test (expected = RuntimeException.class)
 	public void bug2() { // 1 point
 		parser.add("1test", "t", Parser.STRING);
+		assertNotEquals(0, parser.parse("--1test"));
 	}
 	
 	@Test
@@ -30,24 +31,24 @@ private Parser parser;
 		parser.add("output","o", Parser.STRING);
 		parser.add("filename", Parser.STRING);
 		
-		assertEquals(parser.parse("--filename 1.txt -o 2.txt"), 0);
-		assertEquals(parser.getString("filename"), "1.txt");
-		assertEquals(parser.getString("output"), "2.txt");
+		assertEquals(0, parser.parse("--filename 1.txt -o 2.txt"), 0);
+		assertEquals("1.txt", parser.getString("filename"));
+		assertEquals("2.txt", parser.getString("output"));
 	}
 	
 	@Test
 	public void bug4() {
 		parser.add("optimise", "O", Parser.BOOLEAN);
 		parser.parse("-O=0");
-		assertEquals(parser.getBoolean("optimise"), false);
+		assertEquals(false, parser.getBoolean("optimise"));
 	}
 	
 	@Test
 	public void bug5() { // 1 point
 		parser.add("file","f", Parser.CHAR);
 		//parser.add("fix","f", Parser.STRING);
-		assertEquals(parser.parse("--file= "), 0);
-		assertEquals(parser.getChar("file"), " ");
+		assertEquals(0, parser.parse("--file= "));
+		assertEquals(" ", parser.getChar("file"));
 	}
 	
 	@Test
@@ -55,17 +56,17 @@ private Parser parser;
 		parser.add("option","o", Parser.BOOLEAN);
 
 		parser.parse("--option=9rfg");
-		assertEquals(parser.getBoolean("option"), true);
+		assertEquals(true, parser.getBoolean("option"));
 
 		parser.parse("--option=00");
-		assertEquals(parser.getBoolean("option"), true);
+		assertEquals(true, parser.getBoolean("option"));
 	}
 	
 	@Test
 	public void bug7() {
 		parser.add("optimise", "oo", Parser.INTEGER);
-		assertEquals(parser.parse("--optimise=-1"), 0);
-		assertEquals(parser.getInteger("optimise"), -1);
+		assertEquals(0, parser.parse("--optimise=-1"));
+		assertEquals(-1, parser.getInteger("optimise"));
 	}
 	
 	@Test
@@ -83,8 +84,8 @@ private Parser parser;
 		parser.add("file","f", Parser.CHAR);
 		parser.add("f", Parser.BOOLEAN);
 		//parser.add("fix","f", Parser.STRING);
-		assertEquals(parser.parse("--file=="), 0);
-		assertEquals(parser.getString("f"), "");
+		assertEquals(0, parser.parse("--file=="), 0);
+		assertEquals("", parser.getString("f"));
 	}
 	
 	@Test
@@ -92,13 +93,15 @@ private Parser parser;
 		parser.add("output", "oUt", Parser.STRING);
 	  	parser.add("oUt", "out", Parser.STRING);
 	  	parser.parse("-oUt=1.txt -out=12"); // i assigned a value using shortcut
-	  	assertEquals(parser.getString("output"),"1.txt"); // I got the value with shortcut
-	  	assertEquals(parser.getString("oUt"), "12");
+	  	assertEquals("1.txt", parser.getString("output")); // I got the value with shortcut
+	  	assertEquals("12", parser.getString("oUt"));
 	}
 	
 	@Test
 	public void bug12() {
-		
+		parser.add("file", Parser.STRING);
+
+		assertEquals(0, parser.parse(""));
 	}
 	
 	@Test
@@ -106,8 +109,16 @@ private Parser parser;
 		parser.add("file","f", Parser.CHAR);
 		parser.add("f", Parser.BOOLEAN);
 		//parser.add("fix","f", Parser.STRING);
-		assertEquals(parser.parse("-f=value"), 0);
-		assertEquals(parser.getString("f"), "");
+		assertEquals(0, parser.parse("-f=value"));
+		assertEquals("", parser.getString("f"));
+	}*/
+	
+	@Test
+	public void bug() {
+		parser.add("file", Parser.STRING);
+
+		assertEquals(0, parser.parse(""));
+		assertEquals("9rfg", parser.getString(""));
 	}
 	
 	/*@Test
