@@ -17,7 +17,7 @@ private Parser parser;
 	@Test
 	public void bug1() { // 2 points
 		parser.add("", Parser.STRING);
-		assertEquals(0, parser.parse("--")); //BUG: cannot parse empty name (spec does not say min length)
+		assertEquals(0, parser.parse("--"));
 	}
 	
 	@Test (expected = RuntimeException.class)
@@ -46,7 +46,7 @@ private Parser parser;
 	@Test
 	public void bug5() { // 1 point
 		parser.add("file","f", Parser.CHAR);
-		//parser.add("fix","f", Parser.STRING);
+
 		assertEquals(0, parser.parse("--file= "));
 		assertEquals(" ", parser.getChar("file"));
 	}
@@ -65,6 +65,7 @@ private Parser parser;
 	@Test
 	public void bug7() {
 		parser.add("optimise", "oo", Parser.INTEGER);
+		
 		assertEquals(0, parser.parse("--optimise=-1"));
 		assertEquals(-1, parser.getInteger("optimise"));
 	}
@@ -87,7 +88,7 @@ private Parser parser;
 	public void bug10() { // 3 points
 		parser.add("file","f", Parser.CHAR);
 		parser.add("f", Parser.BOOLEAN);
-		//parser.add("fix","f", Parser.STRING);
+
 		assertEquals(0, parser.parse("--file=="), 0);
 		assertEquals("", parser.getString("f"));
 	}
@@ -96,8 +97,9 @@ private Parser parser;
 	public void bug11() { // 3 points
 		parser.add("output", "oUt", Parser.STRING);
 	  	parser.add("oUt", "out", Parser.STRING);
-	  	parser.parse("-oUt=1.txt -out=12"); // i assigned a value using shortcut
-	  	assertEquals("1.txt", parser.getString("output")); // I got the value with shortcut
+	  	
+	  	parser.parse("-oUt=1.txt -out=12");
+	  	assertEquals("1.txt", parser.getString("output"));
 	  	assertEquals("12", parser.getString("oUt"));
 	}
 	
@@ -112,7 +114,7 @@ private Parser parser;
 	public void bug13() { // 2 points
 		parser.add("file","f", Parser.CHAR);
 		parser.add("f", Parser.BOOLEAN);
-		//parser.add("fix","f", Parser.STRING);
+
 		assertEquals(0, parser.parse("-f=value"));
 		assertEquals("", parser.getString("f"));
 	}
