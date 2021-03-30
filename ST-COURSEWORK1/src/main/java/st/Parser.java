@@ -103,12 +103,8 @@ public class Parser {
 		
 		ArrayList<Character> result = new ArrayList<Character>();
 		
-		//BASE CASE: return an empty char list
-		if (value == "" || value.charAt(0) == '-') {
-			return result;
-		
-		//Else we must return a non-empty char list
-		} else {
+		//Check if the list should not be empty
+		if (value != "" && value.charAt(0) != '-') {
 			Character lastChar = null;
 			Character startInterval = null;
 			Boolean lastCharWasInterval = false;
@@ -120,72 +116,58 @@ public class Parser {
 				//Check the given char is valid
 				if (Character.isLetter(charI) || Character.isDigit(charI) || charI == '.') {
 					
-					if (lastChar != null) {
-						//Check for interval
-						if (lastChar == '-' && charI != '.') {
-							lastCharWasInterval = true;
+					//Check if there is an interval
+					if (lastChar != null && lastChar == '-' && charI != '.') {
+						lastCharWasInterval = true;
 							
-							//Check that the start interval does not equal the given char (avoid char list redundancies)
-							if (startInterval != charI) {
-								//Change chars to ordinal for easy manipulation
-								int start = (int) startInterval;
-								int end = (int) charI;
+						//Change chars to ASCII values for easy manipulation
+						int start = (int) startInterval;
+						int end = (int) charI;
+						
+						//Check if this interval is between same char types (both letter or both digit)
+						if ((Character.isDigit(startInterval) && Character.isDigit(charI)) || 
+							(Character.isLetter(startInterval) && Character.isLetter(charI))) {
+							
+							//Check if interval start value is less than the end
+							if (start < end) {
+								for (int k = start+1; k <= end; k++) {
+									result.add((char) k);
+								}
 								
-								//Interval between same char types (letter/digit)
-								if ((Character.isDigit(startInterval) && Character.isDigit(charI)) || 
-									(Character.isLetter(startInterval) && Character.isLetter(charI))) {
-									
-									//Interval where start value is less than the end
-									if (start < end) {
-										for (int k = start+1; k <= end; k++) {
-											Character charK = (char) k;
-											
-											result.add(charK);
-										}
-										
-									//Else start value is greater than the end
-									} else {
-										for (int k = start-1; k >= end; k--) {
-											Character charK = (char) k;
-											
-											result.add(charK);
-										}
-									}
-								
-								//Interval between different char types (letter/digit)
-								} else {
-									//Checks if the start of the interval is a digit
-									if (start < end) {
-										for (int k = start+1; k <= ((int) '9'); k++) {
-											Character charK = (char) k;
-											
-											result.add(charK);
-										}
-										for (int j = ((int) 'a'); j <= ((int) end); j++) {
-											Character charJ = (char) j;
-											
-											result.add(charJ);
-										}
-									
-									//Else the start of the interval is a char
-									} else {
-										for (int j = ((int) 'a'); j <= ((int) end); j++) {
-											Character charJ = (char) j;
-											
-											result.add(charJ);
-										}
-										for (int k = start+1; k <= ((int) '9'); k++) {
-											Character charK = (char) k;
-											
-											result.add(charK);
-										}
-									}
+							//Else interval start value is greater than the end
+							} else {
+								for (int k = start-1; k >= end; k--) {
+									result.add((char) k);
 								}
 							}
+						
+						//Interval between different char types (letter & digit)
 						} else {
-							result.add(charI);
-							lastCharWasInterval = false;
+							//Checks if the start of the interval is a digit
+							if (start < end) {
+								//Adds the digits
+								for (int k = start+1; k <= ((int) '9'); k++) {										
+									result.add((char) k);
+								}
+								//Adds the chars
+								for (int j = ((int) 'a'); j <= ((int) end); j++) {
+									result.add((char) j);
+								}
+							
+							//Else: the start of the interval is a char
+							} else {
+								//Adds the chars
+								for (int j = ((int) 'a'); j <= ((int) end); j++) {
+									result.add((char) j);
+								}
+								//Adds the digits
+								for (int k = start+1; k <= ((int) '9'); k++) {
+									result.add((char) k);
+								}
+							}
 						}
+						
+					//There is no interval so we add the valid char
 					} else {
 						result.add(charI);
 						lastCharWasInterval = false;
@@ -198,28 +180,27 @@ public class Parser {
 					
 					//Check if this is a chained interval ie. a-g-z
 					if (lastCharWasInterval) {
-						result.add(lastChar);
+						result.add(lastChar); //If so we add the middle char again (ie. g)
 					}
 					
 					//If the last char was valid prepare the interval
-					if (lastChar != null) {
+					if (lastChar != null && lastChar != '-') {
 						startInterval = lastChar;
 						lastChar = '-';
 						
-					//Else eliminate the hyphen char
+					//Else do not account for this hyphen char
 					} else {
 						lastChar = null;
 					}
 					lastCharWasInterval = false;
 					
-				//Eliminate this char if it is not a hyphen, digit, letter, or full-stop
+				//Else do not account for this char (it is not a hyphen, digit, letter, or full-stop)
 				} else {
 					lastChar = null;
 					lastCharWasInterval = false;
 				}
 			}
 		}
-		
 		System.out.println(value);
 		System.out.println(result);
 		return result;

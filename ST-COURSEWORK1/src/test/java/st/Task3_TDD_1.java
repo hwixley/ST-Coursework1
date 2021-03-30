@@ -129,4 +129,46 @@ private Parser parser;
 		parser.add("list", "l", Parser.STRING);
 		assertEquals(new ArrayList<Character>(), parser.getCharacterList("list"));
 	}
+	
+	@Test
+	public void test16() {
+		parser.add("list", "l", Parser.STRING);
+		assertEquals(0, parser.parse("--list=c-c"));
+		assertEquals(new ArrayList<Character>(Arrays.asList('c')), parser.getCharacterList("list"));
+	}
+	
+	@Test
+	public void test17() {
+		parser.add("list", "l", Parser.STRING);
+		assertEquals(0, parser.parse("--list=1-3-1"));
+		assertEquals(new ArrayList<Character>(Arrays.asList('1','2','3','3','2','1')), parser.getCharacterList("list"));
+	}
+	
+	@Test
+	public void test18() {
+		parser.add("list", "l", Parser.STRING);
+		assertEquals(0, parser.parse("--list=a-----c"));
+		assertEquals(new ArrayList<Character>(Arrays.asList('a','c')), parser.getCharacterList("list"));
+	}
+	
+	@Test
+	public void test19() {
+		parser.add("list", "l", Parser.STRING);
+		assertEquals(0, parser.parse("--list=test_2?4*#.txt"));
+		assertEquals(new ArrayList<Character>(Arrays.asList('t','e','s','t','2','4','.','t','x','t')), parser.getCharacterList("list"));
+	}
+	
+	@Test
+	public void test20() {
+		parser.add("list", "l", Parser.STRING);
+		assertEquals(0, parser.parse(" --list= -test123 .txt"));
+		assertEquals(new ArrayList<Character>(), parser.getCharacterList("list"));
+	}
+	
+	@Test
+	public void test21() {
+		parser.add("list", "l", Parser.STRING);
+		assertEquals(0, parser.parse("--list=test123-. txt"));
+		assertEquals(new ArrayList<Character>(Arrays.asList('t','e','s','t','1','2','3','.','t','x','t')), parser.getCharacterList("list"));
+	}
 }
