@@ -97,6 +97,134 @@ public class Parser {
 		return result;
 	}
 	
+	public List<Character> getCharacterList(String option) {
+		//Set value string to lowercase so only lowercase chars are returned
+		String value = getString(option).toLowerCase();
+		
+		ArrayList<Character> result = new ArrayList<Character>();
+		
+		//BASE CASE: return an empty char list
+		if (value == "" || value.charAt(0) == '-') {
+			return result;
+		
+		//Else we must return a non-empty char list
+		} else {
+			Character lastChar = null;
+			Character startInterval = null;
+			Boolean lastCharWasInterval = false;
+			
+			//Loop through the characters in the 'value' string
+			for (int i = 0; i < value.length(); i++) {
+				Character charI = value.charAt(i); 
+				
+				//Check the given char is valid
+				if (Character.isLetter(charI) || Character.isDigit(charI) || charI == '.') {
+					
+					if (lastChar != null) {
+						//Check for interval
+						if (lastChar == '-' && charI != '.') {
+							lastCharWasInterval = true;
+							
+							//Check that the start interval does not equal the given char (avoid char list redundancies)
+							if (startInterval != charI) {
+								//Change chars to ordinal for easy manipulation
+								int start = (int) startInterval;
+								int end = (int) charI;
+								
+								//Interval between same char types (letter/digit)
+								if ((Character.isDigit(startInterval) && Character.isDigit(charI)) || 
+									(Character.isLetter(startInterval) && Character.isLetter(charI))) {
+									
+									//Interval where start value is less than the end
+									if (start < end) {
+										for (int k = start+1; k <= end; k++) {
+											Character charK = (char) k;
+											
+											result.add(charK);
+										}
+										
+									//Else start value is greater than the end
+									} else {
+										for (int k = start-1; k >= end; k--) {
+											Character charK = (char) k;
+											
+											result.add(charK);
+										}
+									}
+								
+								//Interval between different char types (letter/digit)
+								} else {
+									//Checks if the start of the interval is a digit
+									if (start < end) {
+										for (int k = start+1; k <= ((int) '9'); k++) {
+											Character charK = (char) k;
+											
+											result.add(charK);
+										}
+										for (int j = ((int) 'a'); j <= ((int) end); j++) {
+											Character charJ = (char) j;
+											
+											result.add(charJ);
+										}
+									
+									//Else the start of the interval is a char
+									} else {
+										for (int j = ((int) 'a'); j <= ((int) end); j++) {
+											Character charJ = (char) j;
+											
+											result.add(charJ);
+										}
+										for (int k = start+1; k <= ((int) '9'); k++) {
+											Character charK = (char) k;
+											
+											result.add(charK);
+										}
+									}
+								}
+							}
+						} else {
+							result.add(charI);
+							lastCharWasInterval = false;
+						}
+					} else {
+						result.add(charI);
+						lastCharWasInterval = false;
+					}
+					
+					lastChar = charI;
+				
+				//Check if the given char is a hyphen (and prepare interval)
+				} else if (charI == '-') {
+					
+					//Check if this is a chained interval ie. a-g-z
+					if (lastCharWasInterval) {
+						result.add(lastChar);
+					}
+					
+					//If the last char was valid prepare the interval
+					if (lastChar != null) {
+						startInterval = lastChar;
+						lastChar = '-';
+						
+					//Else eliminate the hyphen char
+					} else {
+						lastChar = null;
+					}
+					lastCharWasInterval = false;
+					
+				//Eliminate this char if it is not a hyphen, digit, letter, or full-stop
+				} else {
+					lastChar = null;
+					lastCharWasInterval = false;
+				}
+			}
+		}
+		
+		System.out.println(value);
+		System.out.println(result);
+		return result;
+	}
+	
 	public int parse(String command_line_options) {
 		if (command_line_options == null) {
 			return -1;
