@@ -168,7 +168,7 @@ private Parser parser;
 	@Test
 	public void test21() {
 		parser.add("list", "l", Parser.STRING);
-		assertEquals(0, parser.parse("--list=test123-. txt"));
+		assertEquals(0, parser.parse("--list=test123-.txt"));
 		assertEquals(new ArrayList<Character>(Arrays.asList('t','e','s','t','1','2','3','.','t','x','t')), parser.getCharacterList("list"));
 	}
 }

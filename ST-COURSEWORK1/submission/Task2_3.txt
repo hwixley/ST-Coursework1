@@ -1,9 +1,9 @@
 Advantages of using automated test generation tools:
-- They are fast to do as all you have to do is execute the program
-- Easy way to confirm the application still functions properly
+- They are fast and easy to implement as all you have to do is execute the test generation tool on the application
+- They provide quick feedback and are useful to check that the application still functions properly after changes are made to it
 - Allows testing professionals more time to write more complex test cases that the auto-generator does not catch
 
 Disadvantages of using automated test generation tools:
 - Not reliable as they typically cannot find many bugs
 - Can provide a false sense of security
-- Still requires testing professionals to go over the bugs found in auto-generated test cases as to not write redundant test cases
+- Still requires testing professionals to go through all the auto-generated test cases so they do not write redundant tests
