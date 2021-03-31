@@ -124,24 +124,55 @@ public class Parser {
 						int start = (int) startInterval;
 						int end = (int) charI;
 						
+						//Check if this interval is between same char types (both letter or both digit)
+						if ((Character.isDigit(startInterval) && Character.isDigit(charI)) || 
+							(Character.isLetter(startInterval) && Character.isLetter(charI))) {
 							
-						//Check if interval start value is less than the end
-						if (start < end) {
-							for (int k = start+1; k <= end; k++) {
-								result.add((char) k);
+							//Check if interval start value is less than the end
+							if (start < end) {
+								for (int k = start+1; k <= end; k++) {
+									result.add((char) k);
+								}
+								
+							//Else interval start value is greater than the end
+							} else {
+								for (int k = start-1; k >= end; k--) {
+									result.add((char) k);
+								}
 							}
-						//Else interval start value is greater than the end
+						
+						//Interval between different char types (letter & digit)
 						} else {
-							for (int k = start-1; k >= end; k--) {
-								result.add((char) k);
+							//Checks if the start of the interval is a digit
+							if (start < end) {
+								//Adds the digits
+								for (int k = start+1; k <= ((int) '9'); k++) {										
+									result.add((char) k);
+								}
+								//Adds the chars
+								for (int j = ((int) 'a'); j <= ((int) end); j++) {
+									result.add((char) j);
+								}
+							
+							//Else: the start of the interval is a char
+							} else {
+								//Adds the chars
+								for (int j = ((int) 'a'); j <= ((int) end); j++) {
+									result.add((char) j);
+								}
+								//Adds the digits
+								for (int k = start+1; k <= ((int) '9'); k++) {
+									result.add((char) k);
+								}
 							}
 						}
 						
-					//Else there is no interval so we add the valid char
+					//There is no interval so we add the valid char
 					} else {
 						result.add(charI);
 						lastCharWasInterval = false;
 					}
+					
 					lastChar = charI;
 				
 				//Check if the given char is a hyphen (and prepare interval)

@@ -21,7 +21,6 @@ private Parser parser;
 	public void test0() {
 		parser.add("list", "l", Parser.STRING);
 		assertEquals(0, parser.parse("--list=e"));
-		System.out.println(parser.getCharacterList("list"));
 		assertEquals(new ArrayList<Character>(Arrays.asList('e')), parser.getCharacterList("list"));
 	}
 	
@@ -106,8 +105,8 @@ private Parser parser;
 	@Test
 	public void test12() {
 		parser.add("list", Parser.STRING);
-		assertEquals(0, parser.parse("--list=test7-c.txt"));
-		assertEquals(new ArrayList<Character>(Arrays.asList('t','e','s','t','7','8','9','a','b','c','.','t','x','t')), parser.getCharacterList("list"));
+		assertEquals(0, parser.parse("--list=test7-9.txt"));
+		assertEquals(new ArrayList<Character>(Arrays.asList('t','e','s','t','7','8','9','.','t','x','t')), parser.getCharacterList("list"));
 	}
 	
 	@Test
